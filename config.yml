@@ -1,0 +1,17 @@
+commands:
+    авторизация: true
+    профиль: false
+    аватар: true
+    ежедневный_бонус: true
+    топ: false
+
+mysql:
+    host: ip
+    port: 3306
+    database: subbot
+    username: root
+    password:
+
+leaderRoles:
+    rubyLeaderRoleId: 1488934449407070299
+    voiceLeaderRoleId: 1488933935600767016
