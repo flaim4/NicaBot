@@ -60,7 +60,7 @@ public static class VoiceTopCommand
     [InteractionEvent]
     public static async Task HandleVoiceTopPage(SocketMessageComponent comp, BotDbContext db)
     {
-        if (!comp.Data.CustomId.StartsWith("voice_top_page_"))
+        if (!comp.Data.CustomId.StartsWith("voice_top_page_") && !comp.Data.CustomId.StartsWith("voice_top_refresh_"))
             return;
 
         try
@@ -69,7 +69,8 @@ public static class VoiceTopCommand
             if (guild == null)
                 return;
 
-            var pageStr = comp.Data.CustomId.Replace("voice_top_page_", string.Empty);
+            var isRefresh = comp.Data.CustomId.StartsWith("voice_top_refresh_");
+            var pageStr = comp.Data.CustomId.Replace(isRefresh ? "voice_top_refresh_" : "voice_top_page_", string.Empty);
             if (!int.TryParse(pageStr, out var page))
                 return;
 
@@ -161,13 +162,19 @@ public static class VoiceTopCommand
                             .WithLabel("Назад")
                             .WithCustomId($"voice_top_page_{page - 1}")
                             .WithDisabled(page <= 1)
-                            .WithEmote(Emote.Parse("<:left:1482375481918754982>")),
+                            .WithEmote(new Emoji("⬅️")),
+                        new ButtonBuilder()
+                            .WithStyle(ButtonStyle.Secondary)
+                            .WithLabel("Обновить")
+                            .WithCustomId($"voice_top_refresh_{page}")
+                            .WithDisabled(false)
+                            .WithEmote(new Emoji("🔄")),
                         new ButtonBuilder()
                             .WithStyle(ButtonStyle.Secondary)
                             .WithLabel("Далее")
                             .WithCustomId($"voice_top_page_{page + 1}")
                             .WithDisabled(page >= totalPages)
-                            .WithEmote(Emote.Parse("<:right:1482375507118133289>"))
+                            .WithEmote(new Emoji("➡️"))
                     }))
         });
     }
