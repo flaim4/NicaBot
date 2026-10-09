@@ -8,7 +8,6 @@ namespace SubBot;
 
 internal class Program
 {
-    // Делаем _client публичным и статическим
     public static DiscordSocketClient? Client { get; private set; }
     private static AutoSlash? _autoSlash;
 
